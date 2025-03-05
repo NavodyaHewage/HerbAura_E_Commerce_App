@@ -1,6 +1,9 @@
 # HerbAura_E_Commerce_App
 HernAura Web Application 
 
+## Project Structure
+
+```
 
 FindJob/
 │
@@ -48,3 +51,5 @@ FindJob/
 ├── index.php
 ├── .htaccess
 └── README.md
+
+```
