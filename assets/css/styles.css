@@ -10993,3 +10993,31 @@ header.masthead h1, header.masthead .h1 {
 #portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption, #portfolio .container-sm .portfolio-box:hover .portfolio-box-caption, #portfolio .container-md .portfolio-box:hover .portfolio-box-caption, #portfolio .container-lg .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xl .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xxl .portfolio-box:hover .portfolio-box-caption {
   opacity: 1;
 }
+
+
+/* styles.css */
+:root {
+  --primary-green: #2d5a27;
+  --secondary-beige: #f5e6d3;
+}
+
+body {
+  background-color: #f8f9fa;
+  font-family: 'Merriweather', serif;
+}
+
+.btn-primary {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+.btn-primary:hover {
+  background-color: #1e3d19;
+  border-color: #1e3d19;
+}
+
+.registration-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}

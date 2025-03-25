@@ -49,7 +49,6 @@
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item"><a class="nav-link" href="public/login.php">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="public/register.php">Register</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#cart"><i class="bi-cart"></i></a></li>
                 </ul>
             </div>
         </div>
