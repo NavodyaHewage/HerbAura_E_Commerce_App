@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
 
@@ -17,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($login_result === true) {
             // Redirect based on user role
             if (isAdmin()) {
-                header("Location: ../admin/dashboard.php");
+                header("Location: ../admin/admin_dash.php");
             } else {
                 //redirect to the customer dashboard
                 header("Location: ../index.php");

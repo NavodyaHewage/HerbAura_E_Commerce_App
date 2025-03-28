@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,27 +79,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="../index.php#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#about">User</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">Contact</a></li>
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <li class="nav-item">
-                            <div class="profile-dropdown">
-                                <a class="nav-link" href="account.php">
-                                    <i class="bi-person"></i>
-                                </a>
-                                <div class="profile-dropdown-menu">
-                                    <a class="profile-dropdown-item" href="account.php">My Profile</a>
-                                    <a class="nav-link" href="cart.php"><i class="bi-cart"></i></a>
-                                    <a class="profile-dropdown-item" href="orders.php"><i class="bi bi-bag-check"></i></a>
-                                    <a class="profile-dropdown-item" href="logout.php">Logout</a>
-                                </div>
-                            </div>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>
-                    <?php endif; ?>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">Category</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">logout</a></li>
                     
                 </ul>
             </div>
