@@ -70,7 +70,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="../index.php">
+            <a class="navbar-brand" href="../admin/admin_dash.php">
                 <img src="../assets/assets/img/logo.png" alt="HerbAura Logo" width="40" class="d-inline-block align-text-top">
                 HERBAURA
             </a>
@@ -78,16 +78,19 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav me-auto my-2 mx-5 my-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="../admin/user.php"><i class="bi bi-people"></i>&nbsp;User</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.php"><i class="bi bi-box-seam"></i>&nbsp;Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-tags"></i>&nbsp;Category</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-cart-check"></i>&nbsp;Orders</a></li>
+                </ul>
+
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="../index.php#about">User</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">Category</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">Orders</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.php#contact">logout</a></li>
-                    
+                    <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-person-square"></i>&nbsp;Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-box-arrow-down"></i>&nbsp;Logout</a></li>
                 </ul>
             </div>
+
         </div>
     </nav>
     <main class="container-fluid px-0">
