@@ -80,8 +80,8 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav me-auto my-2 mx-5 my-lg-0">
                     <li class="nav-item"><a class="nav-link" href="../admin/user.php"><i class="bi bi-people"></i>&nbsp;User</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.php"><i class="bi bi-box-seam"></i>&nbsp;Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-tags"></i>&nbsp;Category</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../admin/product.php"><i class="bi bi-box-seam"></i>&nbsp;Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../admin/category.php"><i class="bi bi-tags"></i>&nbsp;Category</a></li>
                     <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-cart-check"></i>&nbsp;Orders</a></li>
                 </ul>
 
