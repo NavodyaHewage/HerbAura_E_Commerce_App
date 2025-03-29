@@ -164,4 +164,40 @@ function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
+
+// admin functions
+
+function getAllUsers($conn) {
+    $query = "SELECT user_id, username, email, role, first_name, last_name, phone_number FROM Users";
+    $result = mysqli_query($conn, $query);
+
+    if (!$result) {
+        die("Query Failed: " . mysqli_error($conn));
+    }
+
+    $users = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $users[] = $row;
+    }
+
+    return $users;
+}
+
+function getUserById($conn, $user_id) {
+    $sql = "SELECT * FROM Users WHERE user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_assoc($result);
+}
+
+function deleteUser($conn, $user_id) {
+    $sql = "DELETE FROM Users WHERE user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $user_id);
+    return mysqli_stmt_execute($stmt);
+}
+
+
 ?>

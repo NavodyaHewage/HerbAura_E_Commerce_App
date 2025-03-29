@@ -9,13 +9,74 @@ if (!isLoggedIn() || !isAdmin()) {
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
-// $admin = getAdminDetailsByUserId($user_id);
+// Get database connection
+$link = dbConnect();
 
-// if ($admin === null) {
-//     die('Admin not found.');
-// }
-
+// Get dashboard statistics
+$stats = [];
+try {
+    // Total Products
+    $result = mysqli_query($link, "SELECT COUNT(*) FROM Products");
+    $row = mysqli_fetch_row($result);
+    $stats['total_products'] = $row[0];
+    
+    // Total Categories
+    $result = mysqli_query($link, "SELECT COUNT(*) FROM Categories");
+    $row = mysqli_fetch_row($result);
+    $stats['total_categories'] = $row[0];
+    
+    // Total Orders
+    $result = mysqli_query($link, "SELECT COUNT(*) FROM Orders");
+    $row = mysqli_fetch_row($result);
+    $stats['total_orders'] = $row[0];
+    
+    // Total Customers
+    $result = mysqli_query($link, "SELECT COUNT(*) FROM Users WHERE role = 'user'");
+    $row = mysqli_fetch_row($result);
+    $stats['total_customers'] = $row[0];
+    
+    // Recent Orders
+    $result = mysqli_query($link, "SELECT o.order_id, u.username, o.total_amount, o.status, o.created_at 
+                         FROM Orders o JOIN Users u ON o.user_id = u.user_id 
+                         ORDER BY o.created_at DESC LIMIT 5");
+    $recent_orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
+    // Revenue data for chart (last 7 days)
+    $result = mysqli_query($link, "SELECT DATE(created_at) as date, SUM(total_amount) as daily_revenue 
+                         FROM Orders 
+                         WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) 
+                         GROUP BY DATE(created_at) 
+                         ORDER BY DATE(created_at)");
+    $revenue_data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
+    // Prepare chart data
+    $chart_labels = [];
+    $chart_values = [];
+    $date = new DateTime();
+    for ($i = 6; $i >= 0; $i--) {
+        $date->modify("-1 day");
+        $date_str = $date->format('Y-m-d');
+        $chart_labels[] = $date->format('M d');
+        
+        $found = false;
+        foreach ($revenue_data as $row) {
+            if ($row['date'] == $date_str) {
+                $chart_values[] = $row['daily_revenue'];
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $chart_values[] = 0;
+        }
+    }
+    $chart_labels = array_reverse($chart_labels);
+    $chart_values = array_reverse($chart_values);
+    
+} catch (Exception $e) {
+    // Handle database errors gracefully
+    die("Database error: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -121,59 +182,46 @@ $user_id = $_SESSION['user_id'];
             background-color: #1e3d19;
             color: white;
         }
+        
+        .status-badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            border-radius: 0.25rem;
+        }
+        
+        .badge-pending {
+            background-color: #ffc107;
+            color: #000;
+        }
+        
+        .badge-processing {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+        
+        .badge-shipped {
+            background-color: #007bff;
+            color: #fff;
+        }
+        
+        .badge-delivered {
+            background-color: #28a745;
+            color: #fff;
+        }
+        
+        .badge-cancelled {
+            background-color: #dc3545;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
 <?php include '../includes/admin_header.php'; ?>
 
-<!-- 
     <div class="container-fluid">
-        <div class="row"> -->
-            <!-- Sidebar -->
-            <!-- <div class="col-md-3 col-lg-2 d-md-block sidebar">
-                <div class="position-sticky pt-3">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="dashboard.php">
-                                <i class="bi bi-speedometer2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="products.php">
-                                <i class="bi bi-box-seam"></i> Products
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="categories.php">
-                                <i class="bi bi-tags"></i> Categories
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="orders.php">
-                                <i class="bi bi-cart-check"></i> Orders
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="customers.php">
-                                <i class="bi bi-people"></i> Customers
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="reports.php">
-                                <i class="bi bi-graph-up"></i> Reports
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="settings.php">
-                                <i class="bi bi-gear"></i> Settings
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
-
-            <!-- Main Content -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+        <div class="row">
+            <main class="col-12 px-md-4 py-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Dashboard Overview</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
@@ -188,47 +236,141 @@ $user_id = $_SESSION['user_id'];
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="row">
+                <div class="row mb-4">
                     <div class="col-md-3">
-                        <div class="card card-primary">
+                        <div class="card card-primary h-100">
                             <div class="card-body text-center">
                                 <i class="bi bi-box-seam card-icon text-primary"></i>
                                 <h5 class="card-title">Total Products</h5>
+                                <h2 class="mb-3"><?= number_format($stats['total_products']) ?></h2>
                                 <a href="products.php" class="btn btn-sm btn-herbaura">View Products</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card card-success">
+                        <div class="card card-success h-100">
                             <div class="card-body text-center">
                                 <i class="bi bi-tags card-icon text-success"></i>
                                 <h5 class="card-title">Categories</h5>
+                                <h2 class="mb-3"><?= number_format($stats['total_categories']) ?></h2>
                                 <a href="categories.php" class="btn btn-sm btn-herbaura">View Categories</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card card-warning">
+                        <div class="card card-warning h-100">
                             <div class="card-body text-center">
                                 <i class="bi bi-cart-check card-icon text-warning"></i>
                                 <h5 class="card-title">Total Orders</h5>
+                                <h2 class="mb-3"><?= number_format($stats['total_orders']) ?></h2>
                                 <a href="orders.php" class="btn btn-sm btn-herbaura">View Orders</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card card-info">
+                        <div class="card card-info h-100">
                             <div class="card-body text-center">
                                 <i class="bi bi-people card-icon text-info"></i>
                                 <h5 class="card-title">Customers</h5>
+                                <h2 class="mb-3"><?= number_format($stats['total_customers']) ?></h2>
                                 <a href="customers.php" class="btn btn-sm btn-herbaura">View Customers</a>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Charts and Recent Orders -->
+                <div class="row">
+                    <!-- Revenue Chart -->
+                    <div class="col-md-8">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title">Revenue (Last 7 Days)</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="revenueChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title">Quick Stats</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Today's Orders
+                                        <span class="badge bg-primary rounded-pill">14</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Pending Orders
+                                        <span class="badge bg-warning rounded-pill">8</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Low Stock Products
+                                        <span class="badge bg-danger rounded-pill">5</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        New Customers (Week)
+                                        <span class="badge bg-success rounded-pill">12</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="card recent-table">
+                    <div class="card-header">
+                        <h5 class="card-title">Recent Orders</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($recent_orders as $order): ?>
+                                    <tr>
+                                        <td>#<?= $order['order_id'] ?></td>
+                                        <td><?= htmlspecialchars($order['username']) ?></td>
+                                        <td><?= date('M j, Y', strtotime($order['created_at'])) ?></td>
+                                        <td>Rs. <?= number_format($order['total_amount'], 2) ?></td>
+                                        <td>
+                                            <span class="status-badge badge-<?= strtolower($order['status']) ?>">
+                                                <?= ucfirst($order['status']) ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="order_details.php?id=<?= $order['order_id'] ?>" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="orders.php" class="btn btn-herbaura">View All Orders</a>
+                    </div>
+                </div>
             </main>
-        <!-- </div>
-    </div> -->
+        </div>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -240,10 +382,10 @@ $user_id = $_SESSION['user_id'];
         const revenueChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                labels: <?= json_encode($chart_labels) ?>,
                 datasets: [{
                     label: 'Revenue (Rs.)',
-                    data: [120000, 190000, 150000, 200000, 180000, 220000, 250000],
+                    data: <?= json_encode($chart_values) ?>,
                     backgroundColor: 'rgba(45, 90, 39, 0.2)',
                     borderColor: 'rgba(45, 90, 39, 1)',
                     borderWidth: 2,
@@ -256,6 +398,13 @@ $user_id = $_SESSION['user_id'];
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Rs. ' + context.raw.toLocaleString();
+                            }
+                        }
                     }
                 },
                 scales: {
