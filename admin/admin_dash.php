@@ -13,7 +13,7 @@ $user_id = $_SESSION['user_id'];
 // $admin = getAdminDetailsByUserId($user_id);
 
 // if ($admin === null) {
-//     die('Admin not found.');
+//     die('Admin not found.'); 
 // }
 
 ?>

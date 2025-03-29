@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="../assets/css/styles.css" rel="stylesheet">
+    
     <style>
         .navbar {
             background-color: rgba(255, 255, 255, 0.9) !important;
