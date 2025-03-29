@@ -86,7 +86,7 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-person-square"></i>&nbsp;Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/profile.php"><i class="bi bi-person-square"></i>&nbsp;Profile</a></li>
                     <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-box-arrow-down"></i>&nbsp;Logout</a></li>
                 </ul>
             </div>

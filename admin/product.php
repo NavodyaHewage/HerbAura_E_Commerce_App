@@ -225,22 +225,22 @@ if ($result) {
             border-color: #1e3d19;
         }
         
-        .btn-warning {
+        .btn-warn {
             background-color: var(--accent-orange);
             border-color: var(--accent-orange);
         }
         
-        .btn-warning:hover {
+        .btn-warn:hover {
             background-color: #d35400;
             border-color: #d35400;
         }
         
-        .btn-danger {
+        .btn-dan {
             background-color: #dc3545;
             border-color: #dc3545;
         }
         
-        .btn-danger:hover {
+        .btn-dan:hover {
             background-color: #bb2d3b;
             border-color: #bb2d3b;
         }
@@ -384,7 +384,7 @@ if ($result) {
                                 <td><?= htmlspecialchars($product['category_name'] ?? 'Uncategorized') ?></td>
                                 <td><?= date('M d, Y', strtotime($product['created_at'])) ?></td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" 
+                                    <button class="btn btn-sm btn-warn me-2" data-bs-toggle="modal" 
                                         data-bs-target="#editProductModal" 
                                         data-productid="<?= $product['product_id'] ?>"
                                         data-name="<?= htmlspecialchars($product['name']) ?>"
@@ -396,7 +396,7 @@ if ($result) {
                                         <i class="bi bi-pencil"></i> Edit
                                     </button>
                                     <a href="product.php?delete_id=<?= $product['product_id'] ?>" 
-                                        class="btn btn-sm btn-danger"
+                                        class="btn btn-sm btn-dan"
                                         onclick="return confirm('Are you sure you want to delete this product? All images will be permanently deleted.')">
                                         <i class="bi bi-trash"></i> Delete
                                     </a>
