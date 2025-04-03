@@ -141,4 +141,25 @@ CREATE TABLE Reviews (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
+Database change:
 
+-- First, let's modify the Categories table to support hierarchy
+ALTER TABLE Categories 
+ADD COLUMN parent_id INT NULL,
+ADD CONSTRAINT fk_parent_category 
+    FOREIGN KEY (parent_id) REFERENCES Categories(category_id)
+    ON DELETE SET NULL;
+
+-- Now let's fix the Products table (there was a syntax error in your original)
+ALTER TABLE Products 
+MODIFY COLUMN image_url VARCHAR(255) NULL,
+MODIFY COLUMN category_id INT NULL,
+ADD CONSTRAINT fk_product_category 
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    ON DELETE SET NULL;
+
+
+ALTER TABLE Orders 
+ADD COLUMN status_description TEXT NULL 
+COMMENT 'Detailed description of the current order status' 
+AFTER status;

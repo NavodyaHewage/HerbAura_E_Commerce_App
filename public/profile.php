@@ -360,30 +360,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                                                 </div>
                                                 
                                                 <p class="card-text mb-1">
-                                                    <?= htmlspecialchars($address['street']) ?>
-                                                    <?= !empty($address['apartment']) ? ', ' . htmlspecialchars($address['apartment']) : '' ?>
+                                                    <?= htmlspecialchars($address['street'] ?? '') ?>
+                                                    <?= !empty($address['apartment']) ? ', ' . htmlspecialchars($address['apartment'] ?? '') : '' ?>
                                                 </p>
                                                 <p class="card-text mb-1">
-                                                    <?= htmlspecialchars($address['city']) ?>, 
-                                                    <?= htmlspecialchars($address['state']) ?> 
-                                                    <?= htmlspecialchars($address['postal_code']) ?>
+                                                    <?= htmlspecialchars($address['city'] ?? '') ?>, 
+                                                    <?= htmlspecialchars($address['state'] ?? '') ?> 
+                                                    <?= htmlspecialchars($address['postal_code'] ?? '') ?>
                                                 </p>
-                                                <p class="card-text"><?= htmlspecialchars($address['country']) ?></p>
-                                                
+                                                <p class="card-text"><?= htmlspecialchars($address['country'] ?? '') ?></p>
+                                                                                                
                                                 <div class="d-flex gap-2 mt-3">
-                                                    <button class="btn btn-sm btn-outline-primary edit-address" 
-                                                            data-bs-toggle="modal" data-bs-target="#editAddressModal"
-                                                            data-addressid="<?= $address['address_id'] ?>"
-                                                            data-street="<?= htmlspecialchars($address['street']) ?>"
-                                                            data-apartment="<?= htmlspecialchars($address['apartment']) ?>"
-                                                            data-city="<?= htmlspecialchars($address['city']) ?>"
-                                                            data-state="<?= htmlspecialchars($address['state']) ?>"
-                                                            data-postalcode="<?= htmlspecialchars($address['postal_code']) ?>"
-                                                            data-country="<?= htmlspecialchars($address['country']) ?>"
-                                                            data-addresstype="<?= htmlspecialchars($address['address_type']) ?>"
-                                                            data-isdefault="<?= $address['is_default'] ?>">
-                                                        <i class="bi bi-pencil"></i> Edit
-                                                    </button>
+                                                <button class="btn btn-sm btn-outline-primary edit-address" 
+                                                        data-bs-toggle="modal" data-bs-target="#editAddressModal"
+                                                        data-addressid="<?= $address['address_id'] ?>"
+                                                        data-street="<?= htmlspecialchars($address['street'] ?? '') ?>"
+                                                        data-apartment="<?= htmlspecialchars($address['apartment'] ?? '') ?>"
+                                                        data-city="<?= htmlspecialchars($address['city'] ?? '') ?>"
+                                                        data-state="<?= htmlspecialchars($address['state'] ?? '') ?>"
+                                                        data-postalcode="<?= htmlspecialchars($address['postal_code'] ?? '') ?>"
+                                                        data-country="<?= htmlspecialchars($address['country'] ?? '') ?>"
+                                                        data-addresstype="<?= htmlspecialchars($address['address_type'] ?? 'home') ?>"
+                                                        data-isdefault="<?= $address['is_default'] ?>">
+                                                    <i class="bi bi-pencil"></i> Edit
+                                                </button>
                                                     <a href="profile.php?delete_address=<?= $address['address_id'] ?>" 
                                                        class="btn btn-sm btn-outline-danger"
                                                        onclick="return confirm('Are you sure you want to delete this address?')">

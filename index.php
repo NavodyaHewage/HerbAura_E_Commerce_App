@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-lg-8 align-self-baseline">
                     <p class="text-white-75 mb-5">Experience Authentic Sri Lankan Ayurveda</p>
-                    <a class="btn btn-light btn-xl" href="#products">Explore Products</a>
+                    <a class="btn btn-light btn-xl" href="public/shop.php">Explore Products</a>
                 </div>
             </div>
         </div>

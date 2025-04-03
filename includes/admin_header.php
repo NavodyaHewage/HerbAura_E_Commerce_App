@@ -82,7 +82,7 @@
                     <li class="nav-item"><a class="nav-link" href="../admin/user.php"><i class="bi bi-people"></i>&nbsp;User</a></li>
                     <li class="nav-item"><a class="nav-link" href="../admin/product.php"><i class="bi bi-box-seam"></i>&nbsp;Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="../admin/category.php"><i class="bi bi-tags"></i>&nbsp;Category</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.php#contact"><i class="bi bi-cart-check"></i>&nbsp;Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../admin/view_order.php"><i class="bi bi-cart-check"></i>&nbsp;Orders</a></li>
                 </ul>
 
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">

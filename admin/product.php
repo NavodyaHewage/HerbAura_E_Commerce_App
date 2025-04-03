@@ -18,12 +18,54 @@ if (!file_exists($uploadDir)) {
 // Allowed image types
 $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
-// Fetch all categories for dropdown
+// Fetch all categories with hierarchy for dropdown
 $categories = [];
-$category_query = "SELECT category_id, name FROM Categories ORDER BY name ASC";
+$categoryTree = [];
+$category_query = "SELECT c1.category_id, c1.name, c1.parent_id, c2.name as parent_name 
+                  FROM Categories c1 
+                  LEFT JOIN Categories c2 ON c1.parent_id = c2.category_id 
+                  ORDER BY COALESCE(c1.parent_id, 0), c1.name ASC";
 $category_result = $link->query($category_query);
 if ($category_result) {
-    $categories = $category_result->fetch_all(MYSQLI_ASSOC);
+    $allCategories = $category_result->fetch_all(MYSQLI_ASSOC);
+    
+    // Build hierarchical category tree
+    foreach ($allCategories as $category) {
+        if ($category['parent_id'] === NULL) {
+            $categoryTree[$category['category_id']] = [
+                'name' => $category['name'],
+                'children' => []
+            ];
+        }
+    }
+    
+    foreach ($allCategories as $category) {
+        if ($category['parent_id'] !== NULL && isset($categoryTree[$category['parent_id']])) {
+            $categoryTree[$category['parent_id']]['children'][$category['category_id']] = [
+                'name' => $category['name'],
+                'children' => []
+            ];
+        }
+    }
+}
+
+// Function to generate category options with hierarchy
+function generateCategoryOptions($tree, $selected = null, $prefix = '') {
+    $options = '';
+    foreach ($tree as $id => $category) {
+        $options .= sprintf(
+            '<option value="%d"%s>%s%s</option>',
+            $id,
+            $selected == $id ? ' selected' : '',
+            $prefix,
+            htmlspecialchars($category['name'])
+        );
+        
+        if (!empty($category['children'])) {
+            $options .= generateCategoryOptions($category['children'], $selected, $prefix . '&nbsp;&nbsp;&nbsp;');
+        }
+    }
+    return $options;
 }
 
 // Handle form submissions
@@ -434,9 +476,7 @@ if ($result) {
                                     <label for="category_id" class="form-label">Category</label>
                                     <select class="form-select" id="category_id" name="category_id">
                                         <option value="">-- Select Category --</option>
-                                        <?php foreach ($categories as $category): ?>
-                                            <option value="<?= $category['category_id'] ?>"><?= htmlspecialchars($category['name']) ?></option>
-                                        <?php endforeach; ?>
+                                        <?= generateCategoryOptions($categoryTree) ?>
                                     </select>
                                 </div>
                             </div>
@@ -506,9 +546,7 @@ if ($result) {
                                     <label for="edit_category_id" class="form-label">Category</label>
                                     <select class="form-select" id="edit_category_id" name="category_id">
                                         <option value="">-- Select Category --</option>
-                                        <?php foreach ($categories as $category): ?>
-                                            <option value="<?= $category['category_id'] ?>"><?= htmlspecialchars($category['name']) ?></option>
-                                        <?php endforeach; ?>
+                                        <?= generateCategoryOptions($categoryTree) ?>
                                     </select>
                                 </div>
                             </div>
