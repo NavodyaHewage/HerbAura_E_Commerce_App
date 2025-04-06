@@ -33,35 +33,27 @@
         .nav-link:hover {
             color: #f4623a !important;
         }
-        .bi-cart, .bi-person {
+        .bi-cart, .bi-person, .bi-bag-check, .bi-box-arrow-right {
             font-size: 1.2rem;
+            margin-right: 0.3rem;
         }
-        .profile-dropdown {
-            display: inline-block;
-            position: relative;
+        .cart-badge {
+            font-size: 0.6rem;
+            vertical-align: top;
         }
-        .profile-dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: white;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 5px;
+        .main-nav-items {
+            margin-right: auto; /* Pushes user items to the right */
         }
-        .profile-dropdown:hover .profile-dropdown-menu {
-            display: block;
+        .user-nav-items {
+            display: flex;
+            align-items: center;
         }
-        .profile-dropdown-item {
-            color: #2d5a27;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-        .profile-dropdown-item:hover {
-            background-color: #f8f9fa;
-            color: #f4623a;
+        @media (max-width: 992px) {
+            .user-nav-items {
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(0,0,0,0.1);
+            }
         }
     </style>
 </head>
@@ -77,29 +69,31 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                <!-- Main navigation items -->
+                <ul class="navbar-nav main-nav-items">
                     <li class="nav-item"><a class="nav-link" href="../index.php#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="../index.php#contact">Contact</a></li>
+                </ul>
+                
+                <!-- User navigation items (right-aligned) -->
+                <ul class="navbar-nav user-nav-items">
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <li class="nav-item">
-                            <div class="profile-dropdown">
-                                <a class="nav-link" href="account.php">
-                                    <i class="bi-person"></i>
-                                </a>
-                                <div class="profile-dropdown-menu">
-                                    <a class="profile-dropdown-item" href="account.php">My Profile</a>
-                                    <a class="nav-link" href="cart.php"><i class="bi-cart"></i></a>
-                                    <a class="profile-dropdown-item" href="orders.php"><i class="bi bi-bag-check"></i></a>
-                                    <a class="profile-dropdown-item" href="logout.php">Logout</a>
-                                </div>
-                            </div>
+                            <a class="nav-link" href="cart.php">
+                                <i class="bi-cart"></i> Cart
+                                <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0): ?>
+                                    <span class="badge bg-primary rounded-pill cart-badge"><?= count($_SESSION['cart']) ?></span>
+                                <?php endif; ?>
+                            </a>
                         </li>
+                        <li class="nav-item"><a class="nav-link" href="orders.php"><i class="bi-bag-check"></i> Orders</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../public/profile.php"><i class="bi-person"></i> Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="logout.php"><i class="bi-box-arrow-right"></i> Logout</a></li>
                     <?php else: ?>
                         <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
                         <li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>
                     <?php endif; ?>
-                    
                 </ul>
             </div>
         </div>

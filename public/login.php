@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: ../admin/admin_dash.php");
             } else {
                 //redirect to the customer dashboard
-                header("Location: ../index.php");
+                header("Location: shop.php");
                 console.log("Login successful", $login_result);
             }
             exit();
