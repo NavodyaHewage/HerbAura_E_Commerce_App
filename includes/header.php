@@ -74,6 +74,7 @@
                     <li class="nav-item"><a class="nav-link" href="../index.php#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="../index.php#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/shop.php"><i class="bi bi-shop"></i> Shop</a></li>
                 </ul>
                 
                 <!-- User navigation items (right-aligned) -->
@@ -87,12 +88,12 @@
                                 <?php endif; ?>
                             </a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="orders.php"><i class="bi-bag-check"></i> Orders</a></li>
+                        <li class="nav-item"><a class="nav-link" href="orders.php"><i class="bi bi-basket2"></i> Orders</a></li>
                         <li class="nav-item"><a class="nav-link" href="../public/profile.php"><i class="bi-person"></i> Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="logout.php"><i class="bi-box-arrow-right"></i> Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../public/logout.php"><i class="bi-box-arrow-right"></i> Logout</a></li>
                     <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../public/login.php">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../public/register.php">Register</a></li>
                     <?php endif; ?>
                 </ul>
             </div>

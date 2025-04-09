@@ -439,7 +439,7 @@ if ($new_arrivals_result) {
                                             <div class="product-price">
                                                 Rs. <?= number_format($product['price'], 2) ?>
                                             </div>
-                                            <a href="product-details.php?id=<?= $product['product_id'] ?>" class="btn btn-add-to-cart mt-3">
+                                            <a href="../products/product-details.php?id=<?= $product['product_id'] ?>" class="btn btn-add-to-cart mt-3">
                                                 View Details
                                             </a>
                                         </div>
